@@ -9,17 +9,18 @@ async function main() {
 
     const args = process.argv.slice(2)
 
-    if (args.length != 1) {
+    if (args.length != 2) {
         console.error(`
             Missing parameter.
-            Usage: kseal-decode SECRET
+            Usage: kseal-exp namespace app
         `)
         process.exit(1)
     }
 
-    const secret = args[0]
+    const namespace = args[0]
+    const secret = args[1]
 
-    const stdout = await execShellCommand(`kubectl get secret ${secret} -o json`);
+    const stdout = await execShellCommand(`kubectl get secret ${secret} -o json -n ${namespace}`);
 
     getSecretResp = JSON.parse(stdout)
     keys = Object.keys(getSecretResp.data)
